@@ -48,5 +48,8 @@ if (Meteor.isServer) {
         Meteor.server.method_handlers['notes.remove'].apply({userId: 'testUserId'});
       }).toThrow();
     });
+    it('should update note',function () {
+      Meteor.server.method_handlers['notes.update'].apply()
+    });
   });
 }

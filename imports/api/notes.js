@@ -32,6 +32,34 @@ Meteor.methods({
     }).validate({_id});
     //Notes.remove to remove the notes
     Notes.remove({_id, userId:this.userId});
-
+  },
+  'notes.update'(_id,updates){
+    if(!this.userId){
+      throw new Meteor.Error('not-authorized');
+    }
+    new SimpleSchema({
+      _id:{
+        type: String,
+        min: 1
+      },
+      title:{
+        type: String,
+        optional: true
+      },
+      body:{
+        type: String,
+        optional: true
+      }
+    }).validate({
+      _id,
+      ...updates
+    });
+    //update the timestamp
+    Notes.update(_id,{
+      $set:{
+        updatedAt: moment().valueOf(),
+        ...updates
+      }
+    });
   }
 });
