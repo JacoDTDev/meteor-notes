@@ -5,6 +5,8 @@ import { Notes } from './notes';
 
 if (Meteor.isServer) {
   describe('notes', function () {
+      //seed data
+      //test data
     const noteOne = {
       _id: 'testNoteId1',
       title:'test title',
@@ -12,11 +14,18 @@ if (Meteor.isServer) {
       updatedAt:0,
       userId:'testUserId'
     };
-    //seed data
-    //test data
+    const noteTwo = {
+        _id: 'testNoteId2',
+        title:'Things to buy',
+        body:'Couch',
+        updatedAt:0,
+        userId:'testUserId2'
+    };
+
     beforeEach(function () {
       Notes.remove({}); //this do not effect our normal data
       Notes.insert(noteOne);
+      Notes.insert(noteTwo);
     });
     //insert note test
     it('should insert new note', function () {
@@ -106,6 +115,21 @@ if (Meteor.isServer) {
           expect(()=>{
               Meteor.server.method_handlers['notes.update'].apply({userId: noteOne.userId});
           }).toThrow();
+      });
+      //test publication
+      it('should return a users notes',function () {
+          const res = Meteor.server.publish_handlers.notes.apply({userId: noteOne.userId});
+          const notes = res.fetch();
+
+          expect(notes.length).toBe(1);
+          expect(notes[0]).toEqual(noteOne);
+      });
+      //test if the user has no note must get no notes.
+      it('should return zero notes for user that has none',function () {
+          const res = Meteor.server.publish_handlers.notes.apply({userId: 'testid'});
+          const notes = res.fetch();
+
+          expect(notes.length).toBe(0);
       });
   });
 }
