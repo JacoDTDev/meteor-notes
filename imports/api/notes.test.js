@@ -49,8 +49,36 @@ if (Meteor.isServer) {
         Meteor.server.method_handlers['notes.remove'].apply({userId: noteOne.userId});
       }).toThrow();
     });
+    //success update test
     it('should update note',function () {
-      Meteor.server.method_handlers['notes.update'].apply()
+        const title ='This is an updated title'; //change the title to the new one
+
+        Meteor.server.method_handlers['notes.update'].apply({
+            userId:noteOne.userId
+        },[
+            noteOne._id,
+            {title}
+        ]);
+
+        const note = Notes.findOne(noteOne._id); //finding the changed note and se it equal to an const
+
+        expect(note.updatedAt).toBeGreaterThan(0); //check that the new timestamp is showing
+        expect(note).toInclude({
+            title: title, // new way of showing this is just to have title by it self
+            body: noteOne.body//to check that the body did not change.
+        });
+    });
+
+    //error if extra updates
+    it('should throw error if extra updates provided', function () {
+        expect(()=>{
+            Meteor.server.method_handlers['notes.update'].apply({
+                userId:noteOne.userId
+            },[
+                noteOne._id,
+                {title:'new title', yourName:'Jaco'} //yourname is the extra data
+            ]);
+        }).toThrow();
     });
   });
 }
