@@ -55,7 +55,7 @@ Meteor.methods({
       ...updates
     });
     //update the timestamp
-    Notes.update(_id,{
+    Notes.update({_id,userId: this.userId},{
       $set:{
         updatedAt: moment().valueOf(),
         ...updates

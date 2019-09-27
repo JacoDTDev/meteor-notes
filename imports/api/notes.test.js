@@ -44,7 +44,7 @@ if (Meteor.isServer) {
       }).toThrow();
     });
 
-    it('should not remove note if invalid_id',function () {
+    it('should not remove note if invalid _id',function () {
       expect(()=>{
         Meteor.server.method_handlers['notes.remove'].apply({userId: noteOne.userId});
       }).toThrow();
@@ -80,5 +80,32 @@ if (Meteor.isServer) {
             ]);
         }).toThrow();
     });
+    //fail if unauthorised user
+    it('should not update if user was not creator',function () {
+        const title ='This is an updated title'; //change the title to the new one
+
+        Meteor.server.method_handlers['notes.update'].apply({
+            userId:'testid'
+        },[
+            noteOne._id,
+            {title}
+        ]);
+
+        const note = Notes.findOne(noteOne._id); //finding the changed note and se it equal to an const
+
+        expect(note).toInclude(noteOne);
+    });
+
+      it('should not update note if unauthenticated',function () {
+          expect(()=>{
+              Meteor.server.method_handlers['notes.update'].apply({},[noteOne._id]);
+          }).toThrow();
+      });
+
+      it('should not update note if invalid _id',function () {
+          expect(()=>{
+              Meteor.server.method_handlers['notes.update'].apply({userId: noteOne.userId});
+          }).toThrow();
+      });
   });
 }
