@@ -33,16 +33,22 @@ if (Meteor.isClient){
             expect(spy.calls[0].arguments[0]).toEqual({email});
             expect(spy.calls[0].arguments[1]).toBe(password);
         });
-        
+
         it('should sat loginWithPassword callback errors',function () {
-            const spy = expect.createspy();
+            const spy =expect.createSpy();
             const wrapper = mount(<Login loginWithPassword={spy}/>);
 
-            wrapper.find('form').sibling('submit');
+            wrapper.find('form').simulate('submit');
+
             spy.calls[0].arguments[2]({});
-            expect(wrapper.state('error').length).toNotBe(0);
-            spy.calls[0].arguments[2]({});
-            expect(wrapper.state('error').length).toNBe(0);
+            expect(wrapper.state('error').length).toNotBe(0); //or expect(wrapper.state('error')).toNotBe('');
+
+            //Call the third argument with no arguments
+
+            //expect error state to be''
+
+            spy.calls[0].arguments[2]();
+            expect(wrapper.state('error')).toBe('');
         });
     });
 }
