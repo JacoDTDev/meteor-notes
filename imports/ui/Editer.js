@@ -13,13 +13,11 @@ export class Editor extends React.Component{
             return(
                 <p>We got the note!</p>
             );
-        }else if (this.props.selectedNoteId){
-            return(
-                <p>Note not found</p>
-            );
         }else{
             return(
-                <p>Pick or create a note to get started.</p>
+                <p>
+                    {this.props.selectedNoteId?'Note not found.':'Pick or create a note to get started'}
+                </p>
             );
         }
     }
