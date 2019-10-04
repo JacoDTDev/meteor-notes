@@ -1,6 +1,6 @@
 import React from 'react';
 import { Accounts } from 'meteor/accounts-base';
-import {createContainer} from 'meteor/react-meteor-data';
+import { createContainer } from 'meteor/react-meteor-data';
 
 export const PrivateHeader = (props) => {
   return (
@@ -15,12 +15,11 @@ export const PrivateHeader = (props) => {
 
 PrivateHeader.propTypes = {
   title: React.PropTypes.string.isRequired,
-    handleLogout: React.PropTypes.func.isRequired
+  handleLogout: React.PropTypes.func.isRequired
 };
 
-export default createContainer(()=>{
-    return{
-        handleLogout:()=> Accounts.logout()
-    };
-},PrivateHeader);
-//export default PrivateHeader;
+export default createContainer(() => {
+  return {
+    handleLogout: () => Accounts.logout()
+  };
+}, PrivateHeader);

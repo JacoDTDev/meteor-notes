@@ -1,13 +1,13 @@
 import { Mongo } from 'meteor/mongo';
 import { Meteor } from 'meteor/meteor';
 import moment from 'moment';
-import SimpleSchema from 'simpl-schema'
+import SimpleSchema from 'simpl-schema';
 
 export const Notes = new Mongo.Collection('notes');
 
-if (Meteor.isServer){
-  Meteor.publish('notes',function () {
-    return Notes.find({userId: this.userId});
+if (Meteor.isServer) {
+  Meteor.publish('notes', function () {
+    return Notes.find({ userId: this.userId });
   });
 }
 
@@ -24,35 +24,35 @@ Meteor.methods({
       updatedAt: moment().valueOf()
     });
   },
-  'notes.remove'(_id){
-    //check for userId,else throw Error
+  'notes.remove'(_id) {
     if (!this.userId) {
       throw new Meteor.Error('not-authorized');
     }
-    //SimpleSchme to validate _id string with length greater than 1
+
     new SimpleSchema({
-     _id:{
+      _id: {
         type: String,
         min: 1
-     }
-    }).validate({_id});
-    //Notes.remove to remove the notes
-    Notes.remove({_id, userId:this.userId});
+      }
+    }).validate({ _id });
+
+    Notes.remove({ _id, userId: this.userId });
   },
-  'notes.update'(_id,updates){
-    if(!this.userId){
+  'notes.update'(_id, updates) {
+    if (!this.userId) {
       throw new Meteor.Error('not-authorized');
     }
+
     new SimpleSchema({
-      _id:{
+      _id: {
         type: String,
         min: 1
       },
-      title:{
+      title: {
         type: String,
         optional: true
       },
-      body:{
+      body: {
         type: String,
         optional: true
       }
@@ -60,9 +60,12 @@ Meteor.methods({
       _id,
       ...updates
     });
-    //update the timestamp
-    Notes.update({_id,userId: this.userId},{
-      $set:{
+
+    Notes.update({
+      _id,
+      userId: this.userId
+    }, {
+      $set: {
         updatedAt: moment().valueOf(),
         ...updates
       }

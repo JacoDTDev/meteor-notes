@@ -1,7 +1,7 @@
 import React from 'react';
 import { Link } from 'react-router';
 import { Accounts } from 'meteor/accounts-base';
-import {createContainer} from 'meteor/react-meteor-data';
+import { createContainer } from 'meteor/react-meteor-data';
 
 export class Signup extends React.Component {
   constructor(props) {
@@ -49,11 +49,12 @@ export class Signup extends React.Component {
   }
 }
 
-Signup.propTypes={
-    createUser : React.PropTypes.func.isRequired
+Signup.propTypes = {
+  createUser: React.PropTypes.func.isRequired
 };
-export default createContainer(()=>{
-    return{
-        createUser: Accounts.createUser
-    };
-},Signup);
+
+export default createContainer(() => {
+  return {
+    createUser: Accounts.createUser
+  };
+}, Signup);

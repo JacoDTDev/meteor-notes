@@ -5,29 +5,27 @@ import { Notes } from './notes';
 
 if (Meteor.isServer) {
   describe('notes', function () {
-      //seed data
-      //test data
     const noteOne = {
       _id: 'testNoteId1',
-      title:'test title',
-      body:'My body for note',
-      updatedAt:0,
-      userId:'testUserId'
+      title: 'My Title',
+      body: 'My body for note',
+      updatedAt: 0,
+      userId: 'testUserId1'
     };
     const noteTwo = {
-        _id: 'testNoteId2',
-        title:'Things to buy',
-        body:'Couch',
-        updatedAt:0,
-        userId:'testUserId2'
+      _id: 'testNoteId2',
+      title: 'Things To Buy',
+      body: 'Couch',
+      updatedAt: 0,
+      userId: 'testUserId2'
     };
 
     beforeEach(function () {
-      Notes.remove({}); //this do not effect our normal data
+      Notes.remove({});
       Notes.insert(noteOne);
       Notes.insert(noteTwo);
     });
-    //insert note test
+
     it('should insert new note', function () {
       const userId = 'testid';
       const _id = Meteor.server.method_handlers['notes.insert'].apply({ userId });
@@ -40,96 +38,96 @@ if (Meteor.isServer) {
         Meteor.server.method_handlers['notes.insert']();
       }).toThrow();
     });
-    //remove note test
-    it('should remove note if authenticated', function () {
-      Meteor.server.method_handlers['notes.remove'].apply({userId: noteOne.userId},[noteOne._id]);
 
-      expect(Notes.findOne({_id:noteOne._id})).toNotExist();
+    it('should remove note', function () {
+      Meteor.server.method_handlers['notes.remove'].apply({ userId: noteOne.userId }, [noteOne._id]);
+
+      expect(Notes.findOne({ _id: noteOne._id})).toNotExist();
     });
-    
-    it('should not remove note if unauthenticated',function () {
-      expect(()=>{
-        Meteor.server.method_handlers['notes.remove'].apply({},[noteOne._id]);
+
+    it('should not remove note if unauthenticated', function () {
+      expect(() => {
+        Meteor.server.method_handlers['notes.remove'].apply({}, [noteOne._id]);
       }).toThrow();
     });
 
-    it('should not remove note if invalid _id',function () {
-      expect(()=>{
-        Meteor.server.method_handlers['notes.remove'].apply({userId: noteOne.userId});
+    it('should not remove note if invalid _id', function () {
+      expect(() => {
+        Meteor.server.method_handlers['notes.remove'].apply({ userId: noteOne.userId});
       }).toThrow();
     });
-    //success update test
-    it('should update note',function () {
-        const title ='This is an updated title'; //change the title to the new one
 
-        Meteor.server.method_handlers['notes.update'].apply({
-            userId:noteOne.userId
-        },[
-            noteOne._id,
-            {title}
-        ]);
+    it('should update note', function () {
+      const title = 'This is an updated title';
 
-        const note = Notes.findOne(noteOne._id); //finding the changed note and se it equal to an const
+      Meteor.server.method_handlers['notes.update'].apply({
+        userId: noteOne.userId
+      }, [
+        noteOne._id,
+        { title }
+      ]);
 
-        expect(note.updatedAt).toBeGreaterThan(0); //check that the new timestamp is showing
-        expect(note).toInclude({
-            title: title, // new way of showing this is just to have title by it self
-            body: noteOne.body//to check that the body did not change.
-        });
+      const note = Notes.findOne(noteOne._id);
+
+      expect(note.updatedAt).toBeGreaterThan(0);
+      expect(note).toInclude({
+        title,
+        body: noteOne.body
+      });
     });
 
-    //error if extra updates
     it('should throw error if extra updates provided', function () {
-        expect(()=>{
-            Meteor.server.method_handlers['notes.update'].apply({
-                userId:noteOne.userId
-            },[
-                noteOne._id,
-                {title:'new title', yourName:'Jaco'} //yourname is the extra data
-            ]);
-        }).toThrow();
-    });
-    //fail if unauthorised user
-    it('should not update if user was not creator',function () {
-        const title ='This is an updated title'; //change the title to the new one
-
+      expect(() => {
         Meteor.server.method_handlers['notes.update'].apply({
-            userId:'testid'
-        },[
-            noteOne._id,
-            {title}
+          userId: noteOne.userId
+        }, [
+          noteOne._id,
+          { title: 'new title', name: 'Andrew' }
         ]);
-
-        const note = Notes.findOne(noteOne._id); //finding the changed note and se it equal to an const
-
-        expect(note).toInclude(noteOne);
+      }).toThrow();
     });
 
-      it('should not update note if unauthenticated',function () {
-          expect(()=>{
-              Meteor.server.method_handlers['notes.update'].apply({},[noteOne._id]);
-          }).toThrow();
-      });
+    it('should not update note if user was not creator', function () {
+      const title = 'This is an updated title';
 
-      it('should not update note if invalid _id',function () {
-          expect(()=>{
-              Meteor.server.method_handlers['notes.update'].apply({userId: noteOne.userId});
-          }).toThrow();
-      });
-      //test publication
-      it('should return a users notes',function () {
-          const res = Meteor.server.publish_handlers.notes.apply({userId: noteOne.userId});
-          const notes = res.fetch();
+      Meteor.server.method_handlers['notes.update'].apply({
+        userId: 'testid'
+      }, [
+        noteOne._id,
+        { title }
+      ]);
 
-          expect(notes.length).toBe(1);
-          expect(notes[0]).toEqual(noteOne);
-      });
-      //test if the user has no note must get no notes.
-      it('should return zero notes for user that has none',function () {
-          const res = Meteor.server.publish_handlers.notes.apply({userId: 'testid'});
-          const notes = res.fetch();
+      const note = Notes.findOne(noteOne._id);
 
-          expect(notes.length).toBe(0);
-      });
+      expect(note).toInclude(noteOne);
+    });
+
+    it('should not update note if unauthenticated', function () {
+      expect(() => {
+        Meteor.server.method_handlers['notes.update'].apply({}, [noteOne._id]);
+      }).toThrow();
+    });
+
+    it('should not update note if invalid _id', function () {
+      expect(() => {
+        Meteor.server.method_handlers['notes.update'].apply({ userId: noteOne.userId});
+      }).toThrow();
+    });
+
+    it('should return a users notes', function () {
+      const res = Meteor.server.publish_handlers.notes.apply({ userId: noteOne.userId });
+      const notes = res.fetch();
+
+      expect(notes.length).toBe(1);
+      expect(notes[0]).toEqual(noteOne);
+    });
+
+    it('should return no notes for user that has none', function () {
+      const res = Meteor.server.publish_handlers.notes.apply({ userId: 'testid' });
+      const notes = res.fetch();
+
+      expect(notes.length).toBe(0);
+    });
+
   });
 }

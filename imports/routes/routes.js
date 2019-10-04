@@ -1,7 +1,7 @@
 import { Meteor } from 'meteor/meteor';
 import React from 'react';
 import { Router, Route, browserHistory } from 'react-router';
-import {Session} from 'meteor/session';
+import { Session } from 'meteor/session';
 
 import Signup from '../ui/Signup';
 import Dashboard from '../ui/Dashboard';
@@ -15,21 +15,18 @@ const onEnterPublicPage = () => {
     browserHistory.replace('/dashboard');
   }
 };
-
 const onEnterPrivatePage = () => {
-    if (!Meteor.userId()) {
-        browserHistory.replace('/');
-    }
+  if (!Meteor.userId()) {
+    browserHistory.replace('/');
+  }
 };
-
 const onEnterNotePage = (nextState) => {
-    if (!Meteor.userId()) {
-        browserHistory.replace('/');
-    }else {
-        Session.set('selectedNoteId',nextState.params.id);
-    }
+  if (!Meteor.userId()) {
+    browserHistory.replace('/');
+  } else {
+    Session.set('selectedNoteId', nextState.params.id);
+  }
 };
-
 export const onAuthChange = (isAuthenticated) => {
   const pathname = browserHistory.getCurrentLocation().pathname;
   const isUnauthenticatedPage = unauthenticatedPages.includes(pathname);
