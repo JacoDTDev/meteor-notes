@@ -38,9 +38,15 @@ export const onAuthChange = (isAuthenticated) => {
     browserHistory.replace('/');
   }
 };
+export const globalOnChange =()=> {
+    console.log('globalOnChange');
+};
+export const globalOnEnter =()=>{
+    console.log('globalOnEnter');
+};
 export const routes = (
   <Router history={browserHistory}>
-      <Route>
+      <Route onEnter={globalOnEnter} onChange = {globalOnChange}>
           <Route path="/" component={Login} privacy="unauth" onEnter={onEnterPublicPage}/>
           <Route path="/signup" component={Signup} privacy = "unauth" onEnter={onEnterPublicPage}/>
           <Route path="/dashboard" component={Dashboard} privacy="auth" onEnter={onEnterPrivatePage}/>
