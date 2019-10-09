@@ -40,10 +40,12 @@ export const onAuthChange = (isAuthenticated) => {
 };
 export const routes = (
   <Router history={browserHistory}>
-    <Route path="/" component={Login} onEnter={onEnterPublicPage}/>
-    <Route path="/signup" component={Signup} onEnter={onEnterPublicPage}/>
-    <Route path="/dashboard" component={Dashboard} onEnter={onEnterPrivatePage}/>
-    <Route path="/dashboard/:id" component={Dashboard} onEnter={onEnterNotePage}/>
-    <Route path="*" component={NotFound}/>
+      <Route>
+          <Route path="/" component={Login} privacy="unauth" onEnter={onEnterPublicPage}/>
+          <Route path="/signup" component={Signup} privacy = "unauth" onEnter={onEnterPublicPage}/>
+          <Route path="/dashboard" component={Dashboard} privacy="auth" onEnter={onEnterPrivatePage}/>
+          <Route path="/dashboard/:id" component={Dashboard} privacy="auth" onEnter={onEnterNotePage}/>
+          <Route path="*" component={NotFound}/>
+      </Route>
   </Router>
 );
