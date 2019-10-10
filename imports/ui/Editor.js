@@ -23,7 +23,17 @@ export class Editor extends React.Component {
     this.setState({title});
     this.props.call('notes.update', this.props.note._id, {title});
   }
-  
+  componentDidUpdate(prevProps, prevState){
+      const currentNoteId = this.props.note?this.props.note._id:undefined;
+      const prevNoteId = prevProps.note?prevProps.note._id:undefined;
+
+      if(currentNoteId && currentNoteId !==prevNoteId){
+          this.setState({
+              title:this.props.note.title,
+              body:this.props.note.body
+          });
+      }
+  }
   render() {
     if (this.props.note) {
       return (
