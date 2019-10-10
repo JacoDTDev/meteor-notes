@@ -32,7 +32,7 @@ if (Meteor.isClient) {
       const wrapper = mount(<Editor browserHistory={browserHistory} call={call} selectedNoteId={notes[0]._id} note={notes[0]}/>);
 
       wrapper.find('button').simulate('click');
-      
+      //test
       expect(browserHistory.push).toHaveBeenCalledWith('/dashboard');
       expect(call).toHaveBeenCalledWith('notes.remove', notes[0]._id);
     });
