@@ -2,6 +2,7 @@ import React from 'react';
 import { createContainer } from 'meteor/react-meteor-data';
 import { Session } from 'meteor/session';
 import { Meteor } from 'meteor/meteor';
+import {browserHistory} from "react-router";
 
 import { Notes } from '../api/notes';
 
@@ -36,6 +37,7 @@ export class Editor extends React.Component {
   }
   deleteNote(){
       this.props.call('notes.remove', this.props.note._id);
+      this.props.browserHistory.push('/dashboard');
   }
   render() {
     if (this.props.note) {
@@ -58,7 +60,9 @@ export class Editor extends React.Component {
 
 Editor.propTypes = {
   note: React.PropTypes.object,
-  selectedNoteId: React.PropTypes.string
+  selectedNoteId: React.PropTypes.string,
+  call: React.PropTypes.func.isRequired,
+  browserHistory: React.PropTypes.object.isRequired
 };
 
 export default createContainer(() => {
@@ -67,6 +71,7 @@ export default createContainer(() => {
   return {
     selectedNoteId,
     note: Notes.findOne(selectedNoteId),
-    call: Meteor.call
+    call: Meteor.call,
+    browserHistory
   };
 }, Editor);
