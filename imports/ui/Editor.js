@@ -34,13 +34,16 @@ export class Editor extends React.Component {
           });
       }
   }
+  deleteNote(){
+      this.props.call('notes.remove', this.props.note._id);
+  }
   render() {
     if (this.props.note) {
       return (
         <div>
           <input value={this.state.title} placeholder="Untitled Note" onChange={this.handleTitleChange.bind(this)}/>
           <textarea value={this.state.body} placeholder="Your note here" onChange={this.handleBodyChange.bind(this)}></textarea>
-          <button>Delete Note</button>
+          <button onClick={this.deleteNote.bind(this)}>Delete Note</button>
         </div>
       );
     } else {
