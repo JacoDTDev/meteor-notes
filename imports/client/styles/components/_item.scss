@@ -1,44 +1,52 @@
-//item list
-.item-list{
+// Item List
+.item-list {
   background-color: white;
   border: 1px solid $grey;
-  width: 100%;
   overflow-y: scroll;
+  width: 100%;
 }
-.item-list__header{
+
+.item-list__header {
   display: flex;
   flex-direction: column;
   padding: $space;
 }
-//items
+
+// Item
 .item {
   border-left: $item-border-width solid transparent;
   cursor: pointer;
   padding: $space;
-  transition: background-color .3s ease, border-left .3s ease ;
+  transition: background-color .3s ease, border-left .3s ease;
 }
-.item:hover{
+
+.item:hover {
   background-color: $light-grey;
   border-left: $item-border-width solid $grey;
 }
-.item--selected, .item--selected:hover{
+
+.item--selected, .item--selected:hover {
   background-color: $light-grey;
   border-left: $item-border-width solid $brand-primary;
 }
-.item__title{
+
+.item__title {
   font-weight: normal;
   font-size: $base-font-size;
   margin-bottom: .4rem;
 }
-.item--selected .item__title{
+
+.item--selected .item__title {
   font-weight: bold;
 }
-.item__subtitle{
+
+.item__subtitle {
   color: $dark-grey;
   margin: 0;
 }
-//Empty Item
-.empty-item{
+
+// Empty Item
+.empty-item {
   font-style: italic;
   padding: $space;
   text-align: center;

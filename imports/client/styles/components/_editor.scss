@@ -1,4 +1,4 @@
-.editor{
+.editor {
   background-color: white;
   border: 1px solid $grey;
   display: flex;
@@ -7,24 +7,26 @@
   width: 100%;
 }
 
-.editor__title{
-  border:none;
+.editor__title {
+  border: none;
   border-bottom: 2px solid $grey;
   font-size: $large-font-size;
   margin-bottom: $large-space;
   outline: none;
-  padding: $input-spacing ;
+  padding: $input-spacing;
 }
 
-.editor__body{
-  flex-grow: 1;
-  font-weight: 300;
-  margin-bottom:$large-space;
-  padding:$input-spacing;
-  resize: none;
+.editor__body {
+   flex-grow: 1;
+   font-weight: 300;
+   margin-bottom: $large-space;
+   outline: none;
+   padding: $input-spacing;
+   resize: none;
 }
-.editor__message{
+
+.editor__message {
   text-align: center;
-  margin: $large-space*2;
-  font-style:italic;
+  margin: $large-space * 2;
+  font-style: italic;
 }

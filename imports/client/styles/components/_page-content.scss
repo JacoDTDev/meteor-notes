@@ -3,31 +3,27 @@
   height: $page-content-height;
   margin: 0 auto;
   max-width: $site-max-width;
-  //firts top and bottom, second left and right
-  @media (min-width: 50rem){
-    padding: $large-space ;
+
+  @include desktop {
+    padding: $large-space $space;
   }
 }
 
 .page-content__sidebar {
-  //display: flex;
   display: none;
   padding-right: $large-space;
   width: $page-content-sidebar-width;
-  @media (min-width: 50rem){
-    display:flex;
+
+  @include desktop {
+    display: flex;
   }
 }
-// this is used to change web layout for mobile
-//@media(min-width: 30rem){
-//  .page-content__sidebar * {
-//    color: red;
-//  }
-//}
+
 .page-content__main {
   display: flex;
-  width:100%;
-  @media (min-width: 50rem) {
+  width: 100%;
+
+  @include desktop {
     width: $page-content-main-width;
   }
 }
