@@ -3,16 +3,31 @@
   height: $page-content-height;
   margin: 0 auto;
   max-width: $site-max-width;
-  padding: $large-space ;//firts top and bottom, second left and right
+  //firts top and bottom, second left and right
+  @media (min-width: 50rem){
+    padding: $large-space ;
+  }
 }
 
 .page-content__sidebar {
-  display: flex;
+  //display: flex;
+  display: none;
   padding-right: $large-space;
   width: $page-content-sidebar-width;
+  @media (min-width: 50rem){
+    display:flex;
+  }
 }
-
+// this is used to change web layout for mobile
+//@media(min-width: 30rem){
+//  .page-content__sidebar * {
+//    color: red;
+//  }
+//}
 .page-content__main {
   display: flex;
-  width: $page-content-main-width;
+  width:100%;
+  @media (min-width: 50rem) {
+    width: $page-content-main-width;
+  }
 }
