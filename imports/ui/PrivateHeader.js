@@ -8,7 +8,7 @@ export const PrivateHeader = (props) => {
   return (
     <div className="header">
       <div className="header__content">
-        <img src={navImageSrc} onClick={props.handleNavToggle}/>
+        <img className="header__nav-toggle" src={navImageSrc} onClick={props.handleNavToggle}/>
         <h1 className="header__title">{props.title}</h1>
         <button className="button button--link-text" onClick={() => props.handleLogout()}>Logout</button>
       </div>
@@ -20,15 +20,13 @@ PrivateHeader.propTypes = {
   title: React.PropTypes.string.isRequired,
   handleLogout: React.PropTypes.func.isRequired,
   isNavOpen: React.PropTypes.bool.isRequired,
-  handleNavToggle : React.PropTypes.func.isRequired
+  handleNavToggle: React.PropTypes.func.isRequired
 };
 
 export default createContainer(() => {
   return {
     handleLogout: () => Accounts.logout(),
-    handleNavToggle:()=>{
-      Session.set('isNavOpen', !Session.get('isNavOpen'));
-    },
+    handleNavToggle:()=> Session.set('isNavOpen', !Session.get('isNavOpen')),
     isNavOpen: Session.get('isNavOpen')
   };
 }, PrivateHeader);
