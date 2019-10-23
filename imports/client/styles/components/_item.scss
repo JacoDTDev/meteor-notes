@@ -11,8 +11,22 @@
   display: flex;
   flex-direction: column;
   padding: $space;
+  button {
+    margin-bottom: 0;
+  }
 }
-
+.item-list__search{
+  display: flex;
+  padding: 0 $space;
+  text-align: center;
+  input {
+    flex: 1;
+    margin-bottom: 0
+  }
+  button {
+    margin-bottom: 0
+  }
+}
 // Item
 .item {
   border-left: $item-border-width solid transparent;
